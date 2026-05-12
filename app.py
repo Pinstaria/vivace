@@ -8,7 +8,7 @@ app = Flask(__name__)
 HF_TOKEN = os.environ.get("HF_TOKEN")
 
 # Connected directly to your Dino101 model!
-API_URL = "https://api-inference.huggingface.co/models/Dino101/vivace-lora"
+API_URL = "https://api-inference.huggingface.co/models/microsoft/DialoGPT-large"
 
 @app.route("/")
 def home():
