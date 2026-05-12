@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vivace AI</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 600px; margin: 50px auto; text-align: center; background-color: #121212; color: white; }
+        #chatbox { height: 400px; border: 1px solid #333; padding: 15px; margin-bottom: 20px; overflow-y: auto; text-align: left; background-color: #1e1e1e; border-radius: 8px; }
+        input { width: 70%; padding: 10px; border-radius: 4px; border: 1px solid #444; background: #222; color: white; }
+        button { padding: 10px 20px; cursor: pointer; background-color: #007bff; color: white; border: none; border-radius: 4px; }
+        .bot-msg { color: #58a6ff; margin-bottom: 10px;}
+        .user-msg { color: #ccc; margin-bottom: 10px;}
+    </style>
+</head>
+<body>
+
+    <h1>Chat with Vivace AI</h1>
+    <div id="chatbox">
+        <div class="bot-msg"><strong>Vivace:</strong> Hello! Ask me anything.</div>
+    </div>
+    
+    <input type="text" id="userInput" placeholder="Type a message...">
+    <button onclick="sendMessage()">Send</button>
+
+    <script>
+        async function sendMessage() {
+            const inputField = document.getElementById("userInput");
+            const chatbox = document.getElementById("chatbox");
+            const text = inputField.value;
+            
+            if (!text) return;
+
+            // Show user message
+            chatbox.innerHTML += `<div class="user-msg"><strong>You:</strong> ${text}</div>`;
+            inputField.value = "";
+            chatbox.innerHTML += `<div class="bot-msg" id="loading"><em>Thinking...</em></div>`;
+            chatbox.scrollTop = chatbox.scrollHeight;
+
+            // Send to our secure Flask backend instead of directly to Hugging Face
+            const response = await fetch("/chat", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ message: text })
+            });
+
+            const data = await response.json();
+            
+            document.getElementById("loading").remove();
+            chatbox.innerHTML += `<div class="bot-msg"><strong>Vivace:</strong> ${data.response}</div>`;
+            chatbox.scrollTop = chatbox.scrollHeight;
+        }
+    </script>
+</body>
+</html>
