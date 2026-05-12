@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 # Render will inject this securely from your settings
 HF_TOKEN = os.environ.get("HF_TOKEN")
-API_URL = "https://api-inference.huggingface.co/models/YOUR_USERNAME/vivace-lora" # <-- UPDATE THIS
+API_URL = "https://api-inference.huggingface.co/models/Dino101/vivace-lora" # <-- UPDATE THIS
 
 @app.route("/")
 def home():
